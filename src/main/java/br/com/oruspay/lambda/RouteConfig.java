@@ -14,13 +14,8 @@ public class RouteConfig  extends RouteBuilder {
         .component("servlet")
         .dataFormatProperty("prettyPrint", "true");        
 
-        
-        
-//      rest("servlet:///hello?servletName=dispatcherServlet").get().to("direct:hello");
-      
-        from("servlet:/api").to("direct:hello");
-         
-        rest("/").get().to("direct:hello");
+        from("servlet:/servlet").to("direct:hello");
+        rest("/api/gravar/rest").get().to("direct:hello").produces("application/json") ;
         from("direct:hello").transform().simple("Hello World!");
 
     }
