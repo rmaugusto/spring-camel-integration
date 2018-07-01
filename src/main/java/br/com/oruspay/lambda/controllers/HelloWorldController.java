@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloWorldController {
 
-    @RequestMapping(value = "/spring", method = RequestMethod.GET)
+    @RequestMapping(value = "/spring/rest", method = RequestMethod.GET)
     @ResponseBody
     public String hello() {
-        return "Hello World ! PORRA !";
+        return "Hello World With Spring Controller";
     }
 }

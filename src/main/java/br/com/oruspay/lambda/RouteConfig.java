@@ -4,6 +4,11 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.springframework.stereotype.Component;
 
+/**
+ * Camel route configuration
+ * @author ricardo
+ *
+ */
 @Component
 public class RouteConfig  extends RouteBuilder {
 
@@ -14,9 +19,8 @@ public class RouteConfig  extends RouteBuilder {
         .component("servlet")
         .dataFormatProperty("prettyPrint", "true");        
 
-        from("servlet:/servlet").to("direct:hello");
-        rest("/api/gravar/rest").get().to("direct:hello").produces("application/json") ;
-        from("direct:hello").transform().simple("Hello World!");
+        rest("/camel/rest").get().to("direct:hello").produces("application/json") ;
+        from("direct:hello").transform().simple("Hello World With Camel");
 
     }
     

@@ -10,54 +10,46 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ServletWrappingController;
 
 /**
- * Essa classe é responsável por intermediar o CamelHttpTransportServlet do
- * dispatcherServlet do Spring Dessa forma as duas convivem simultaneamente nos
- * mapeamentos de URL
+ * This is a servlet Wrapping for CamelHttpTransportServlet and
+ * AwsLambdaServletContainerHandler. It is necessary because
+ * AwsLambdaServletContainerHandler must have just one servlet
  * 
  * @author ricardo
  *
  */
-public class CamelServletWrapper extends ServletWrappingController
-        implements InitializingBean {
+public class CamelServletWrapper extends ServletWrappingController implements InitializingBean {
 
-    public CamelServletWrapper() {
-        setServletClass(CamelHttpTransportServlet.class);
-        setServletName("CamelServlet");
-        setSupportedMethods((String[]) null);
-    }
+	public CamelServletWrapper() {
+		setServletClass(CamelHttpTransportServlet.class);
+		setServletName("CamelServlet");
+		setSupportedMethods((String[]) null);
+	}
 
-    @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
-        return super.handleRequestInternal(new PathStripper(request), response);
-    }
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+		return super.handleRequestInternal(new PathStripper(request), response);
+	}
 
-    /**
-     * Essa classe é responsável por resolver a URL e alimentar o pathInfo
-     * necessário no CamelHttpTransportServlet
-     * 
-     * @author ricardo
-     *
-     */
-    private static class PathStripper extends HttpServletRequestWrapper {
+	private static class PathStripper extends HttpServletRequestWrapper {
 
-        public PathStripper(HttpServletRequest request) {
-            super(request);
-        }
+		public PathStripper(HttpServletRequest request) {
+			super(request);
+		}
 
-        @Override
-        public String getPathInfo() {
-            String value = super.getRequestURI();
-            int index = value.indexOf("?");
-            if (index > 0) {
-                value = value.substring(0, index);
-            }
-            while (value.startsWith("/")) {
-                value = value.substring(1);
-            }
-            return value;
-        }
+		@Override
+		public String getPathInfo() {
+			String value = super.getRequestURI();
+			int index = value.indexOf("?");
+			if (index > 0) {
+				value = value.substring(0, index);
+			}
+			while (value.startsWith("/")) {
+				value = value.substring(1);
+			}
+			return value;
+		}
 
-    }
+	}
 
 }
